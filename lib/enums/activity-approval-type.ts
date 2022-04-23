@@ -1,5 +1,6 @@
 export enum ActivityApprovalType {
     Pending = "Pending",
+    Rejected = "Rejected",
     Approved = "Approved",
-    Rejected = "Rejected"
+    Resolved = "Resolved"
 }

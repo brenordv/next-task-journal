@@ -2,8 +2,6 @@ import {notification, Typography} from 'antd';
 import {NotificationType} from "./enums/notification-type";
 import {isValidEnumValue} from "./type-utils";
 import {ERROR_ICON, NEUTRAL_ICON, SUCCESS_ICON, WARNING_ICON} from "./constants/icons";
-import {CopyOutlined} from "@ant-design/icons";
-import {copyToClipboard} from "./clipboard-utils";
 
 const {Text} = Typography;
 
@@ -42,28 +40,10 @@ export const openNotificationWithIcon = (
             icon = NEUTRAL_ICON;
     }
 
-    const onClickCopy = async (text: string) => {
-        const result = await copyToClipboard(text);
-        if (result) {
-            openNotificationWithIcon(
-                NotificationType.Success,
-                "Support ticket copied",
-                `Support ticket '${text}' copied to clipboard! You can now pass it on to tech support.`);
-            return;
-        }
-        openNotificationWithIcon(
-            NotificationType.Error,
-            "Failed to copy support ticket",
-            "Could not copy support ticket to clipboard. Please, copy it manually.",
-            undefined, true);
-        console.log('copy to clipboard result', result);
-    }
-
     let msg = <Text>{description}</Text>;
     if (errorTicket) {
         const ticket = "507f1f77bcf86cd799439011";
-        msg = <>{msg}<br/><Text>Support Ticket: </Text><Text code>{ticket} <CopyOutlined
-            onClick={() => onClickCopy(ticket)}/></Text></>;
+        msg = <>{msg}<br/><Text>Support Ticket: </Text><Text code copyable>{ticket}</Text></>;
     }
 
 
