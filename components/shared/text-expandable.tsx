@@ -8,9 +8,9 @@ interface TextExpandableStateInterface {
 
 export interface TextExpandableProps {
     children: ReactNode;
-    width: number;
-    expandText: string;
-    collapseText: string;
+    width?: number;
+    expandText?: string;
+    collapseText?: string;
 }
 
 export const TextExpandable: FC<TextExpandableProps> = ({

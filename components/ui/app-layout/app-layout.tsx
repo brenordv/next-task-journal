@@ -1,6 +1,6 @@
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, Typography} from 'antd';
 import React, {FC, ReactNode, useState} from "react";
-import {MehTwoTone, SolutionOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
+import {HomeOutlined, MehTwoTone, SolutionOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import {useRouter} from "next/router";
 import {MenuItemPointer} from "../../../lib/enums/menu-item-pointer";
 import {isValidEnumValue} from "../../../lib/utils/type-utils";
@@ -8,7 +8,7 @@ import {openNotificationWithIcon} from "../../../lib/utils/notification-utils";
 import {NotificationType} from "../../../lib/enums/notification-type";
 import { CacheProvider } from '../../../lib/contexts/providers/cache-provider';
 
-
+const { Link } = Typography;
 const {Header, Footer, Content, Sider} = Layout;
 
 interface MainLayoutProps {
@@ -48,6 +48,9 @@ export const AppLayout: FC<MainLayoutProps> = ({children}: MainLayoutProps) => {
                         defaultSelectedKeys={['1']}
                         mode="inline"
                         onClick={onMenuItemClick}>
+                        <Menu.Item key={MenuItemPointer.home} icon={<HomeOutlined />}>
+                            Home
+                        </Menu.Item>
                         <Menu.Item key={MenuItemPointer.activities} icon={<SolutionOutlined/>}>
                             Activities
                         </Menu.Item>
@@ -70,7 +73,7 @@ export const AppLayout: FC<MainLayoutProps> = ({children}: MainLayoutProps) => {
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
-                        Ant Design ©2018 Created by Ant UED
+                        NTJ - Next Task Journal by <Link href="https://raccoon.ninja" target="_blank">🦝.ninja</Link>
                     </Footer>
                 </Layout>
             </Layout>

@@ -1,5 +1,6 @@
 export enum MenuItemPointer {
-    activities= "/activities",
+    home = "/",
+    activities = "/activities",
     profile = "/profile",
     teams = "/teams",
     projects = "/projects"
