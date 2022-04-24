@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
                     new Date(),
                     ActivityApprovalType.Pending,
                     u.id,
-                    "Maybe...."
+                    "Maybe.... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi justo, iaculis vitae metus sit amet, vestibulum elementum orci. Mauris ac sapien ultricies, rutrum odio nec, accumsan risus. Nam erat sapien, dapibus non nibh eget, dignissim tempor dui."
                 )
             ]
         )

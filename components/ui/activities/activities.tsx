@@ -15,9 +15,10 @@ import {ActivityApprovalType} from "../../../lib/enums/activity-approval-type";
 import {ActivityEventTableData} from "../../../lib/models/activity-event";
 import {UserNameResolver} from "../../resolvers/user-name-resolver/user-name-resolver";
 import {ProjectNameResolver} from "../../resolvers/projet-name-resolver/project-name-resolver";
+import {TextExpandable} from "../../shared/text-expandable";
 
 
-const {Text} = Typography;
+const {Text, Paragraph} = Typography;
 
 const columns = [
     {
@@ -144,8 +145,19 @@ const activityEventsColumns = [
                     break;
             }
             return <Tag color={color}>{colData}</Tag>
+        },
+    },
+    {
+        key: "justification",
+        dataIndex: "justification",
+        title: "Justification",
+        render: (colData: string) => {
+            if (!colData) return null;
+            return (
+                <TextExpandable>{colData}</TextExpandable>
+            )
         }
-    }
+    },
 ]
 
 
