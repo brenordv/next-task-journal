@@ -1,4 +1,4 @@
-import {dateToString, isValidEnumValue} from "../type-utils";
+import {dateToString, isValidEnumValue} from "../utils/type-utils";
 import {MenuItemPointer} from "../enums/menu-item-pointer";
 
 test.each`

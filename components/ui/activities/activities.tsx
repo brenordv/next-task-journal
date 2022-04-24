@@ -1,25 +1,30 @@
 import {FC, ReactNode} from "react";
-import {ActivitySummaryFlat} from "../../lib/models/activity";
-import {ActivityType} from "../../lib/enums/activity-type";
+import {ActivitySummaryFlat, ActivitySummaryFlatTableData} from "../../../lib/models/activity";
+import {ActivityType} from "../../../lib/enums/activity-type";
 import {Table, Tag, Tooltip, Typography} from "antd";
 import {PresetColorType, PresetStatusColorType} from "antd/lib/_util/colors";
-import {dateToString} from "../../lib/type-utils";
-import {ActivityStatus} from "../../lib/enums/activity-status";
+import {dateToString} from "../../../lib/utils/type-utils";
+import {ActivityStatus} from "../../../lib/enums/activity-status";
 import {
     CheckCircleOutlined,
     CloseCircleOutlined,
     ExclamationCircleOutlined,
     QuestionCircleOutlined
 } from "@ant-design/icons";
-import {ActivityApprovalType} from "../../lib/enums/activity-approval-type";
+import {ActivityApprovalType} from "../../../lib/enums/activity-approval-type";
+import {ActivityEventTableData} from "../../../lib/models/activity-event";
+import {UserNameResolver} from "../../resolvers/user-name-resolver/user-name-resolver";
+import {ProjectNameResolver} from "../../resolvers/projet-name-resolver/project-name-resolver";
+
 
 const {Text} = Typography;
 
 const columns = [
     {
         key: "projectName",
-        dataIndex: "projectName",
+        dataIndex: "projectId",
         title: "Project",
+        render: (colData: string) => <ProjectNameResolver projectId={colData}/>
     },
     {
         key: "title",
@@ -47,7 +52,8 @@ const columns = [
     {
         key: "createdBy",
         dataIndex: "createdBy",
-        title: "Created By"
+        title: "Created By",
+        render: (colData: string) => <UserNameResolver userId={colData}/>
     },
     {
         key: "createdAt",
@@ -92,8 +98,10 @@ const columns = [
             if (!colData) return null;
             return (
                 <>
-                    <Text>{record.lastUpdatedBy}</Text><br/>
-                    <Text style={{fontSize: "10px"}}>{dateToString(colData, true)}</Text>
+                    <UserNameResolver userId={record.lastUpdatedBy}>
+                        <br/>
+                        <Text style={{fontSize: "10px"}}>{dateToString(colData, true)}</Text>
+                    </UserNameResolver>
                 </>);
         }
     }
@@ -108,9 +116,15 @@ const activityEventsColumns = [
         render: (colData: Date) => dateToString(colData, true)
     },
     {
+        key: "analyzedBy",
+        dataIndex: "analyzedBy",
+        title: "Analyzed by",
+        render: (colData: string) => <UserNameResolver userId={colData}/>
+    },
+    {
         key: "analysisResult",
-        dataIndex: "analysisResult",
-        title: "Analysis Result",
+        dataIndex: "result",
+        title: "Result",
         render: (colData: ActivityApprovalType) => {
             let color: string = "default";
             let icon: ReactNode = <QuestionCircleOutlined/>;
@@ -131,20 +145,14 @@ const activityEventsColumns = [
             }
             return <Tag color={color}>{colData}</Tag>
         }
-    },
-    {
-        key: "analyzedBy",
-        dataIndex: "analyzedBy",
-        title: "Analyzed by"
     }
 ]
 
 
-
 export const Activities: FC<{ activities: ActivitySummaryFlat[] }> = ({activities}) => {
     //https://ant.design/components/table/
-    const data = []
-    const eventData = []
+    const data: ActivitySummaryFlatTableData[] = []
+    const eventData: ActivityEventTableData[] = []
     for (let i = 0; i < activities.length; i++) {
         const activity = activities[i];
         data.push({
@@ -165,10 +173,13 @@ export const Activities: FC<{ activities: ActivitySummaryFlat[] }> = ({activitie
         }
     }
 
-    const expandNestedRows = () => {
-        return <Table dataSource={eventData} columns={activityEventsColumns} size="small" pagination={false}/>
+    const expandedRowRender = (row: ActivitySummaryFlatTableData) => {
+        const filtered = eventData.filter(ed => ed.activityId === row.activityId);
+        return (
+            <Table dataSource={filtered} columns={activityEventsColumns} size="small" pagination={false}/>
+        );
     }
 
     //https://ant.design/components/table/?theme=dark#components-table-demo-nested-table
-    return <Table dataSource={data} columns={columns} expandable={expandNestedRows} size="middle"/>
+    return <Table dataSource={data} columns={columns} expandable={{expandedRowRender}} size="middle"/>
 }

@@ -1,7 +1,7 @@
 import {notification, Typography} from 'antd';
-import {NotificationType} from "./enums/notification-type";
+import {NotificationType} from "../enums/notification-type";
 import {isValidEnumValue} from "./type-utils";
-import {ERROR_ICON, NEUTRAL_ICON, SUCCESS_ICON, WARNING_ICON} from "./constants/icons";
+import {ERROR_ICON, NEUTRAL_ICON, SUCCESS_ICON, WARNING_ICON} from "../constants/icons";
 
 const {Text} = Typography;
 

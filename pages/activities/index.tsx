@@ -6,7 +6,7 @@ import {User} from "../../lib/models/user";
 import {Project} from "../../lib/models/project";
 import {ActivityStatus} from "../../lib/enums/activity-status";
 import {ActivityApprovalType} from "../../lib/enums/activity-approval-type";
-import Activities from "../../components/activities";
+import Activities from "../../components/ui/activities";
 import {ActivityEvent} from "../../lib/models/activity-event";
 
 const ActivitiesPage: NextPage = ({activities}: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -52,6 +52,7 @@ export const getStaticProps: GetStaticProps = async () => {
             [
                 new ActivityEvent(
                     "aa1",
+                    "a3",
                     new Date(),
                     ActivityApprovalType.Approved,
                     u.id,
@@ -59,15 +60,13 @@ export const getStaticProps: GetStaticProps = async () => {
                 ),
                 new ActivityEvent(
                     "aa2",
+                    "a3",
                     new Date(),
                     ActivityApprovalType.Pending,
                     u.id,
                     "Maybe...."
                 )
-            ],
-            new Date(),
-            ActivityApprovalType.Approved,
-            u.id
+            ]
         )
     ]
 

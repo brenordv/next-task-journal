@@ -31,8 +31,23 @@ export class ActivitySummaryFlat {
         public status: ActivityStatus,
         public lastUpdatedAt?: Date,
         public lastUpdatedBy?: string,
-        public events?: ActivityEvent[],
-        public resolvedAt?: Date,
-        public resolvedById?: string,
-        public resolvedByName?: string) {}
+        public events?: ActivityEvent[]) {}
+}
+
+export class ActivitySummaryFlatTableData extends ActivitySummaryFlat{
+    constructor(
+        public key: number,
+        activityId: string,
+        type: ActivityType,
+        title: string,
+        createdBy: string,
+        createdAt: Date,
+        projectId: string,
+        status: ActivityStatus,
+        lastUpdatedAt?: Date,
+        lastUpdatedBy?: string,
+        events?: ActivityEvent[]) {
+        super(activityId, type, title, createdBy, createdAt, projectId,
+            status, lastUpdatedAt, lastUpdatedBy, events);
+    }
 }
