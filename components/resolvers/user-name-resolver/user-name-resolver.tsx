@@ -15,12 +15,25 @@ const resolveUserId = async (userId: string): Promise<string> => {
 }
 
 
-export const UserNameResolver: FC<{ userId?: string, children?: ReactNode }> = props => {
+export const UserNameResolver: FC<{ userId?: string, children?: ReactNode, abbreviated?: boolean }> = props => {
     const {state, setState} = useCache();
     const cache = state.userNameCache ? state.userNameCache : {};
     const baseProps = {
         targetId: props.userId,
+        abbreviated: props.abbreviated,
         children: props.children
+    }
+    return <BaseCacheResolver
+        cache={cache} cacheSetCallback={setState} resolveCallback={resolveUserId} {...baseProps}/>
+}
+
+export const UserNamePlainTextResolver: FC<{ userId?: string, abbreviated?: boolean }> = props => {
+    const {state, setState} = useCache();
+    const cache = state.userNameCache ? state.userNameCache : {};
+    const baseProps = {
+        targetId: props.userId,
+        abbreviated: props.abbreviated,
+        plainText: true
     }
     return <BaseCacheResolver
         cache={cache} cacheSetCallback={setState} resolveCallback={resolveUserId} {...baseProps}/>

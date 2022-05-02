@@ -2,6 +2,8 @@ import {Dispatch, FC, ReactNode, SetStateAction, useEffect, useState} from "reac
 
 import {Skeleton, Typography} from "antd";
 import {CacheInterface} from "../../../lib/interfaces/cache-interface";
+import {TextProps} from "antd/lib/typography/Text";
+import {onlyCapitalLetters} from "../../../lib/utils/string-utils";
 
 const {Text} = Typography;
 
@@ -11,11 +13,16 @@ export const BaseCacheResolver: FC<{
     cacheSetCallback: Dispatch<SetStateAction<Partial<CacheInterface>>>,
     resolveCallback: Function,
     targetId?: string,
-    children?: ReactNode
+    children?: ReactNode,
+    textProps?: TextProps,
+    plainText?: boolean,
+    abbreviated?: boolean
 }> = props => {
     const [loading, setLoading] = useState(true);
-    const [userName, setUserName] = useState("Uninformed");
-    const {cache, cacheSetCallback, resolveCallback, targetId, children} = props;
+    const [cacheInfo, setCacheInfo] = useState("Uninformed");
+    const {cache, cacheSetCallback, resolveCallback, targetId, children, textProps, plainText, abbreviated} = props;
+
+    const txtProps = !textProps? {} : textProps;
 
     useEffect(() => {
         if (!targetId) {
@@ -24,22 +31,29 @@ export const BaseCacheResolver: FC<{
         }
 
         if (cache && cache[targetId]) {
-            setUserName(cache[targetId]);
+            setCacheInfo(cache[targetId]);
             setLoading(false);
         } else {
             (async () => {
-                const newUserName = await resolveCallback(targetId);
-                if (!newUserName) return;
-                cacheSetCallback((prev) => ({...prev, ...{userId: newUserName}}));
-                setUserName(newUserName);
+                const resolvedName = await resolveCallback(targetId);
+                if (!resolvedName) return;
+                cacheSetCallback((prev) => ({...prev, ...{targetId: resolvedName}}));
+                setCacheInfo(resolvedName);
                 setLoading(false);
             })();
         }
     }, [targetId]);
 
+    let finalCacheInfo = abbreviated? onlyCapitalLetters(cacheInfo) : cacheInfo;
+
+    const result = plainText
+        ? <>{finalCacheInfo}{children}</>
+        : <><Text {...txtProps}>{finalCacheInfo}</Text>{children}</>;
+
+
     return (
         <Skeleton loading={loading} paragraph={false} active>
-            <Text>{userName}</Text>{children}
+            {result}
         </Skeleton>
     )
 }

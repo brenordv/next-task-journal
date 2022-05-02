@@ -1,4 +1,4 @@
-import {Layout, Menu, Typography} from 'antd';
+import {Layout, Menu, Typography, MenuProps} from 'antd';
 import React, {FC, ReactNode, useState} from "react";
 import {HomeOutlined, MehTwoTone, SolutionOutlined, TeamOutlined, UserOutlined} from "@ant-design/icons";
 import {useRouter} from "next/router";
@@ -10,6 +10,7 @@ import { CacheProvider } from '../../../lib/contexts/providers/cache-provider';
 
 const { Link } = Typography;
 const {Header, Footer, Content, Sider} = Layout;
+type MenuItem = Required<MenuProps>['items'][number];
 
 interface MainLayoutProps {
     children: ReactNode
@@ -36,6 +37,30 @@ export const AppLayout: FC<MainLayoutProps> = ({children}: MainLayoutProps) => {
         await router.push(key);
     }
 
+    const getItem = (
+        label: React.ReactNode,
+        key: React.Key,
+        icon?: React.ReactNode,
+        children?: MenuItem[],
+        type?: 'group',
+    ): MenuItem => {
+        return {
+            key,
+            icon,
+            children,
+            label,
+            type,
+        } as MenuItem;
+    }
+
+    const menuItems: MenuProps['items'] = [
+        getItem("Home", MenuItemPointer.home, <HomeOutlined />),
+        getItem("Activities", MenuItemPointer.activities, <SolutionOutlined />),
+        getItem("Teams", MenuItemPointer.teams, <TeamOutlined />),
+        getItem("Profile", MenuItemPointer.profile, <UserOutlined />),
+        getItem("Profile fake", "/fooooo", <UserOutlined />)
+    ]
+
     return (
         <CacheProvider>
             <Layout style={{minHeight: '100vh'}}>
@@ -47,23 +72,8 @@ export const AppLayout: FC<MainLayoutProps> = ({children}: MainLayoutProps) => {
                         theme="dark"
                         defaultSelectedKeys={['1']}
                         mode="inline"
-                        onClick={onMenuItemClick}>
-                        <Menu.Item key={MenuItemPointer.home} icon={<HomeOutlined />}>
-                            Home
-                        </Menu.Item>
-                        <Menu.Item key={MenuItemPointer.activities} icon={<SolutionOutlined/>}>
-                            Activities
-                        </Menu.Item>
-                        <Menu.Item key={MenuItemPointer.teams} icon={<TeamOutlined/>}>
-                            Teams
-                        </Menu.Item>
-                        <Menu.Item key={MenuItemPointer.profile} icon={<UserOutlined/>}>
-                            Profile
-                        </Menu.Item>
-                        <Menu.Item key={"/fooooo"} icon={<UserOutlined/>}>
-                            Profile fake
-                        </Menu.Item>
-                    </Menu>
+                        onClick={onMenuItemClick}
+                        items={menuItems} />
                 </Sider>
                 <Layout className="site-layout">
                     <Header className="site-layout-background" style={{padding: 0}}/>

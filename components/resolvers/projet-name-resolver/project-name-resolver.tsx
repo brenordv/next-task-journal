@@ -2,6 +2,7 @@ import {FC, ReactNode} from "react";
 import {delay} from "../../../lib/utils/async-utils";
 import {useCache} from "../../../lib/hooks/use-cache-hook";
 import {BaseCacheResolver} from "../base-cache-resolver/base-cache-resolver";
+import {TextProps} from "antd/lib/typography/Text";
 
 const resolveProjectId = async (userId: string): Promise<string> => {
     const data: { [key: string]: string } = {
@@ -14,12 +15,13 @@ const resolveProjectId = async (userId: string): Promise<string> => {
 }
 
 
-export const ProjectNameResolver: FC<{ projectId?: string, children?: ReactNode }> = props => {
+export const ProjectNameResolver: FC<{ projectId?: string, children?: ReactNode, textProps?: TextProps }> = props => {
     const {state, setState} = useCache();
     const cache = state.projectNameCache ? state.projectNameCache : {};
     const baseProps = {
         targetId: props.projectId,
-        children: props.children
+        children: props.children,
+        textProps: props.textProps
     }
     return <BaseCacheResolver
         cache={cache} cacheSetCallback={setState} resolveCallback={resolveProjectId} {...baseProps}/>

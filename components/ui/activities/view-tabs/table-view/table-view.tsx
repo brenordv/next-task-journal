@@ -16,6 +16,7 @@ import {ActivitySummaryFlat, ActivitySummaryFlatTableData} from "../../../../../
 import {ActivityApprovalType} from "../../../../../lib/enums/activity-approval-type";
 import {TextExpandable} from "../../../../shared/text-expandable";
 import {ActivityEventTableData} from "../../../../../lib/models/activity-event";
+import {activityTypeToTag} from "../../../../../lib/parsers/activity-type-parsers";
 
 const {Text} = Typography;
 
@@ -35,19 +36,7 @@ const columns = [
         key: "type",
         dataIndex: "type",
         title: "Type",
-        render: (colData: ActivityType) => {
-            let color: PresetColorType = "cyan";
-            switch (colData) {
-                case ActivityType.Deal:
-                    color = "orange";
-                    break;
-                case ActivityType.Task:
-                    color = "geekblue";
-                    break;
-            }
-
-            return <Tag color={color}>{colData}</Tag>
-        }
+        render: activityTypeToTag
     },
     {
         key: "createdBy",
