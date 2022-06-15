@@ -15,8 +15,8 @@ jobs:
           fetch-depth: 0 
       - name: Install dependencies
         run: npm install
-      - name: Install ts-jest
-        run: npm install ts-jest -g        
+      - name: Install jest
+        run: npm install jest ts-jest -g        
       - name: Test and coverage
         run: jest --coverage
       - name: SonarCloud Scan
