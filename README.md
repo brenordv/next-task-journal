@@ -1,6 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Why NextJs
+- **Automatic Image Optimization** with ```Image``` component.
+- **Static File Serving**: If you add a picture to public/me.png, the following code will get to the picture:
+```typescript jsx
+Import Image from 'next/image'
+function Avatar() {  return <Image src="me.png" alt="me" width="64" height="64" />
+export default Avatar
+```
+- **Automatic Code Splitting**: Pages are basic features of NextJS and they are rendered with simply the libraries and JavaScript that they need no more. Rather than creating one single JavaScript record containing all the application code, the application is separated naturally by Next.js in a few distinct assets.
+- **Meta Tags**: The Head component is made to add them and it's accessible directly as a feature of Next.js. You need to import Head from 'next/head' and glue the accompanying code in the render component. Everything inside this tag is being moved to the <head> of the site. There is a key trait characterized on each component that forestalls adding the same metatags on numerous occasions and rather overwrites them.
+- **Routing**: Quite possibly the most fundamental feature of NextJs of the two sites and SPA is exploring from one subpage then onto the next. If you code in React, you need to utilize React switch or other comparative arrangements.
+- **Lazy loading**
+
+## Data Fetching/pre-rendering
+> References: 
+> - https://nextjs.org/docs/basic-features/pages#static-generation-recommended
+> - https://nextjs.org/docs/basic-features/data-fetching/get-static-props
+> - https://nextjs.org/docs/basic-features/data-fetching/get-static-paths
+> - https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props
+
+- getStaticProps: When your **page** depends on external **data**.
+- getStaticPaths: When your **routes** depends on external **data**.
+- getServerSideProps: Like getStaticProps, but on the serverside. Here you can use stuff that works on NodeJs.
+
+
 
 ## Getting Started
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
